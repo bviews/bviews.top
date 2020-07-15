@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bviews.top</id>
     <title>Bviews</title>
-    <updated>2020-07-15T12:12:29.143Z</updated>
+    <updated>2020-07-15T12:30:46.139Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bviews.top"/>
     <link rel="self" href="https://bviews.top/atom.xml"/>
-    <subtitle>个人博客</subtitle>
+    <subtitle>个人网站</subtitle>
     <logo>https://bviews.top/images/avatar.png</logo>
     <icon>https://bviews.top/favicon.ico</icon>
     <rights>All rights reserved 2020, Bviews</rights>
