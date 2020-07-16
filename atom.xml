@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bviews.top</id>
     <title>Bviews个人测试</title>
-    <updated>2020-07-16T09:13:15.765Z</updated>
+    <updated>2020-07-16T10:51:46.758Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bviews.top"/>
     <link rel="self" href="https://bviews.top/atom.xml"/>
@@ -11,7 +11,7 @@
     <icon>https://bviews.top/favicon.ico</icon>
     <rights>All rights reserved 2020, Bviews个人测试</rights>
     <entry>
-        <title type="html"><![CDATA[测试]]></title>
+        <title type="html"><![CDATA[警告：请立即离开此网站。本网站仅用于技术测试。]]></title>
         <id>https://bviews.top/post/ce-shi/</id>
         <link href="https://bviews.top/post/ce-shi/">
         </link>
