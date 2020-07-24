@@ -1,0 +1,227 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vim 学习笔记 | Bviews个人测试</title>
+<link rel="shortcut icon" href="https://bviews.top/favicon.ico?v=1595591212990">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://bviews.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Vim 学习笔记 | Bviews个人测试 - Atom Feed" href="https://bviews.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="关于文件的定位
+按 CTRL + G 可以查看到当前行列的信息。
+G   —— 跳到最后一行
+gg  —— 第一行
+数字G —— 到某一行
+gd: go to definition 快速的跳转到当前的定义
+gv: rehightlight，..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://bviews.top">
+  <img class="avatar" src="https://bviews.top/images/avatar.png?v=1595591212990" alt="">
+  </a>
+  <h1 class="site-title">
+    Bviews个人测试
+  </h1>
+  <p class="site-description">
+    个人网站
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Vim 学习笔记
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-07-24
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h2 id="关于文件的定位">关于文件的定位</h2>
+<p>按 CTRL + G 可以查看到当前行列的信息。</p>
+<p>G   —— 跳到最后一行</p>
+<p>gg  —— 第一行</p>
+<p>数字G —— 到某一行</p>
+<p>gd: go to definition 快速的跳转到当前的定义</p>
+<p>gv: rehightlight，重新选中上次的选中。</p>
+<p>CTRL-O 回到上一个位置</p>
+<p>CTRL-I 回到较新的位置</p>
+<p>{、}  可以向上或向下移动一个段落</p>
+<h2 id="shell">Shell</h2>
+<p>在 Shell 里替代方向键可以使用：</p>
+<ul>
+<li>ctrl + p: 前一条指令</li>
+<li>ctrl + n: 后一条指令</li>
+<li>ctrl + b: 前一个字符</li>
+<li>ctrl + f: 后一个字符</li>
+<li>ctrl + h: 退格（backspace）</li>
+<li>ctrl + d: 等同于 Del</li>
+<li>ctrl + k: 删除到行尾</li>
+<li>ctrl + u: 删除到行首</li>
+<li>ctrl + r:</li>
+</ul>
+<h2 id="vim-as-your-editor26-学习笔记">VIM As Your Editor(2/6) 学习笔记</h2>
+<p>Shift + i : Go to first character of the line and change to edit mode.<br>
+Shift + a: Go to end of the line and change to edit mode.</p>
+<p>*: 搜索当前所在的单次，按了以后还可以通过 n、N 查找上一个或者下一次结果</p>
+<p>#：反向搜索当前所在的单次</p>
+<h2 id="vim-as-your-editor36-学习笔记">VIM As Your Editor(3/6) 学习笔记</h2>
+<p>t&lt; Character &gt;: 往后跳到 character 的前一个字符</p>
+<p>T&lt; Character &gt;: 往前跳到 character 的前一个字符</p>
+<p>f&lt; Character &gt;: 往后跳到 character</p>
+<p>F&lt; Character &gt;: 往前跳到 character</p>
+<p><strong>以上命令经常配合  ； 及  ， 使用。；可以继续搜索下一个 ，则是上一个</strong></p>
+<p>shift + d: 删除到行尾，</p>
+<p>shift + c：删除到行尾并进入编辑模式</p>
+<p>shift + s: 删除本行并进入编辑模式</p>
+<h2 id="vim-as-your-editor46-学习笔记">VIM As Your Editor(4/6) 学习笔记</h2>
+<p>：行数  ：可以跳转到某一行，例如输入”：100“ 则跳转到 第 100 行</p>
+<p>行数G：同上</p>
+<blockquote>
+<p>Q:在 pycharm 里设置相对行数<br>
+A：使用 ideavim，打开~/.ideavimrc，增加set relativenumber</p>
+</blockquote>
+<p>ctrl + d/u： 往下半页，往上半页，但是这种方式容易丢失目标</p>
+<p>%：跳到对应的另一个括号处，例如在 } 处按%，则会跳到对应开头的 { 处</p>
+<p>di{：可以删除{}括号内的内容，但是使用：</p>
+<p>d2i{：可以删除两级{}内的内容</p>
+<p>cip / dip： p 代表 paragraph 段落，在 python 里面段落是通过空行区分的</p>
+<h2 id="vim-as-your-editor56-学习笔记">VIM As Your Editor(5/6) 学习笔记</h2>
+<p>推荐的 vim plugin：</p>
+<p>fzf：文件管理工具，可以快速的找到并打开文件</p>
+<p>ctrl + ^：切换最近编辑的两个文件</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%85%B3%E4%BA%8E%E6%96%87%E4%BB%B6%E7%9A%84%E5%AE%9A%E4%BD%8D">关于文件的定位</a></li>
+<li><a href="#shell">Shell</a></li>
+<li><a href="#vim-as-your-editor26-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">VIM As Your Editor(2/6) 学习笔记</a></li>
+<li><a href="#vim-as-your-editor36-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">VIM As Your Editor(3/6) 学习笔记</a></li>
+<li><a href="#vim-as-your-editor46-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">VIM As Your Editor(4/6) 学习笔记</a></li>
+<li><a href="#vim-as-your-editor56-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">VIM As Your Editor(5/6) 学习笔记</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<a href="http://www.beian.miit.gov.cn" class="record-info">桂ICP备18004952号-1</a>
+  <a class="rss" href="https://bviews.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

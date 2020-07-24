@@ -1,0 +1,228 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>安装 Cert-manger | Bviews个人测试</title>
+<link rel="shortcut icon" href="https://bviews.top/favicon.ico?v=1595591212990">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://bviews.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="安装 Cert-manger | Bviews个人测试 - Atom Feed" href="https://bviews.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="根据 Cert-manager 的官方文档的步骤进行安装，使用的是 Installing with regular manifests 的安装方式。
+Kubernetes
+执行完成后通过如下方式验证安装结果。
+kubectl get pod..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://bviews.top">
+  <img class="avatar" src="https://bviews.top/images/avatar.png?v=1595591212990" alt="">
+  </a>
+  <h1 class="site-title">
+    Bviews个人测试
+  </h1>
+  <p class="site-description">
+    个人网站
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              安装 Cert-manger
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-07-24
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>根据 Cert-manager 的官方文档的步骤进行安装，使用的是 Installing with regular manifests 的安装方式。</p>
+<p><a href="https://cert-manager.io/docs/installation/kubernetes/">Kubernetes</a></p>
+<p>执行完成后通过如下方式验证安装结果。</p>
+<pre><code>kubectl get pods --namespace cert-manager
+</code></pre>
+<p>为了支持阿里云的 DNS 认证方式，需要安装 alidns-webhook</p>
+<p><a href="https://github.com/pragkent/alidns-webhook">pragkent/alidns-webhook</a></p>
+<p>安装时若提示 no matches for kind &quot;Deployment&quot; in version &quot;apps/v1beta2&quot;</p>
+<p>则下载bundle.yaml 后，将 deployment 上面的 apps/v1beta2 修改为 apps/v1</p>
+<p>在使用前需要先创建阿里云的 secret，我们这里使用预先在阿里云申请号的 gxgd.ltd 的域名，配置好权限，生成 AccessKey：<a href="https://ram.console.aliyun.com/users/gxgd-ltd-letsenctry">https://ram.console.aliyun.com/users/gxgd-ltd-letsenctry</a></p>
+<p>生成后，将 AccessKeyID、AccessKeySecret 进行 base64 后填入下列的模板中：</p>
+<pre><code>apiVersion: v1
+kind: Secret
+metadata:
+  name: alidns-secret
+  namespace: cert-manager
+data:
+  access-key: YOUR_ACCESS_KEY
+  secret-key: YOUR_SECRET_KEY
+</code></pre>
+<p>保存并执行 kubectl apply -f ./xxx.yaml</p>
+<p>注意，安装完成后，我们的 ClusterIssuer 是开发模式（staging），如果要正式环境使用，必须将 server 改为： <a href="https://acme-v02.api.letsencrypt.org/directory">https://acme-v02.api.letsencrypt.org/directory</a></p>
+<h2 id="问题">问题</h2>
+<hr>
+<h3 id="pod-一直处于-pending-状态">pod 一直处于 pending 状态</h3>
+<p>发现 cert-manager 的三个 pod 都处于 pending 状态，使用 describe 查看 pod 的详情，发现 event 里有一个 Warning:</p>
+<pre><code>Events:
+  Type     Reason            Age        From               Message
+  ----     ------            ----       ----               -------
+  Warning  FailedScheduling  &lt;unknown&gt;  default-scheduler  0/3 nodes are available: 3 node(s) had taints that the pod didn't tolerate.
+</code></pre>
+<p>具体说明是节点不满足 pod 的要求 node(s) had taints that pod didn't tolerate.</p>
+<p>查看节点的信息： kubectl get nodes，三个节点都是 Master，并且都是 Ready 的状态。</p>
+<pre><code>root@docker:~# kubectl get nodes
+NAME           STATUS   ROLES    AGE   VERSION
+docker         Ready    master   16d   v1.17.3
+k8s-master-2   Ready    master   16d   v1.17.4
+k8s-master-3   Ready    master   16d   v1.17.4
+</code></pre>
+<p>在文档里搜索发现，默认情况下 系统是不会将 Pod 协调到 control-plane 的节点的。</p>
+<blockquote>
+<p>By default, your cluster will not schedule Pods on the control-plane node for security reasons. If you want to be able to schedule Pods on the control-plane node, for example for a single-machine Kubernetes cluster for development, run:<br>
+kubectl taint nodes --all <a href="http://node-role.kubernetes.io/master-">node-role.kubernetes.io/master-</a></p>
+</blockquote>
+<p><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#control-plane-node-isolation">Creating a single control-plane cluster with kubeadm</a></p>
+<p>在执行了 kubectl taint nodes --all <a href="http://node-role.kubernetes.io/master-">node-role.kubernetes.io/master-</a>  后，就不会处于 pending 状态了。</p>
+<h3 id="pod-状态为-errimagepull">Pod 状态为 ErrImagePull</h3>
+<p>等一下他会重新下载，然后就变成 Running。</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E9%97%AE%E9%A2%98">问题</a>
+<ul>
+<li><a href="#pod-%E4%B8%80%E7%9B%B4%E5%A4%84%E4%BA%8E-pending-%E7%8A%B6%E6%80%81">pod 一直处于 pending 状态</a></li>
+<li><a href="#pod-%E7%8A%B6%E6%80%81%E4%B8%BA-errimagepull">Pod 状态为 ErrImagePull</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://bviews.top/post/shi-yong-vimtutor-jin-xing-xue-xi/">
+              <h3 class="post-title">
+                Vim 学习笔记
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<a href="http://www.beian.miit.gov.cn" class="record-info">桂ICP备18004952号-1</a>
+  <a class="rss" href="https://bviews.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
